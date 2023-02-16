@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class PlayerInput : MonoBehaviour
 {
 
-    public UnityEvent OnPressed, OnReleased;
+    public UnityEvent /*CreateBullet,*/ OnPressed, OnReleased;
 
     private bool _isTouchPressed;
 
@@ -19,6 +19,13 @@ public class PlayerInput : MonoBehaviour
     private void GetInput()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        /*
+        if (Input.GetMouseButtonDown(0))
+        {
+            CreateBullet?.Invoke();
+        }
+        */
 
         if (Input.GetMouseButton(0))
         {
