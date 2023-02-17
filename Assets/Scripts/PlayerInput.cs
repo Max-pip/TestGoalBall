@@ -7,13 +7,19 @@ using UnityEngine.EventSystems;
 public class PlayerInput : MonoBehaviour
 {
 
-    public UnityEvent /*CreateBullet,*/ OnPressed, OnReleased;
+    public UnityEvent OnPressed, OnReleased;
 
     private bool _isTouchPressed;
 
     void Update()
     {
+#if UNITY_EDITOR
         GetInput();
+#endif
+
+#if UNITY_ANDROID
+        GetMobileInput();
+#endif
     }
 
     private void GetInput()
@@ -36,5 +42,33 @@ public class PlayerInput : MonoBehaviour
         {
             OnReleased.Invoke();
         }
+    }
+
+    private void GetMobileInput()
+    {
+        /*if (Input.touchCount == 1)
+        {
+            _isTouchPressed = true;
+            OnPressed?.Invoke();
+        }*/
+
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.touches[0];
+            if (touch.phase == TouchPhase.Stationary && !EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+            {
+                _isTouchPressed = true;
+                OnPressed?.Invoke();
+            }
+
+            if (_isTouchPressed && touch.phase == TouchPhase.Ended)
+            {
+                _isTouchPressed = false;
+
+                OnReleased.Invoke();
+            }
+        }
+
+        
     }
 }
