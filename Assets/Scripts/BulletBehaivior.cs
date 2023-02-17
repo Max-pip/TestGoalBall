@@ -8,7 +8,7 @@ public class BulletBehaivior : MonoBehaviour
     {
         if (collision.collider.tag == "Goal")
         {
-            Destroy(gameObject, 0.2f);
+            Destroy(gameObject, 0.1f);
         }
     }
 }

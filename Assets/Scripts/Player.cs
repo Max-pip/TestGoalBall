@@ -6,13 +6,13 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private GameObject _prefab;
     private GameObject _currentPrefab;
-    public float prefabSpeed = 0f;
+    private float _prefabSpeed = 0f;
 
     private void Update()
     {
         if (_currentPrefab != null)
         {
-            _currentPrefab.transform.position += Vector3.forward * prefabSpeed * Time.deltaTime;
+            _currentPrefab.transform.position += Vector3.forward * _prefabSpeed * Time.deltaTime;
         }
     }
 
@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
 
     public void ButtonUp()
     {
-        prefabSpeed = 10f;
+        _prefabSpeed = 10f;
         Debug.Log("Up!");
     }
 }
