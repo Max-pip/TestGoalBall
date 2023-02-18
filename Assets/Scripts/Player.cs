@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
         }
         if (_currentPrefab == null)
         {
-            _currentPrefab = (GameObject) Instantiate(_prefab, new Vector3(0, 1, -11), transform.rotation);
+            _currentPrefab = (GameObject) Instantiate(_prefab, new Vector3(0, 1, -10), transform.rotation);
         }
 
         if (_currentPrefab != null && _canChangeSize)
@@ -43,7 +43,6 @@ public class Player : MonoBehaviour
     {
         _canChangeSize = false;
         SetSpeedBullet(10);
-        Debug.Log("Up!");
     }
 
     public void SetSpeedBullet(float speed)
