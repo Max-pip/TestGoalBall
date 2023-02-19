@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
+    [SerializeField] private GameObject _destroyEffect;
     private Renderer _renderer;
 
     private void Start()
@@ -16,9 +17,9 @@ public class Obstacle : MonoBehaviour
         _renderer.material.SetColor("_Color", Color.yellow);
     }
 
-    public void TestSomething()
+    public void DestroyEffect()
     {
-        Debug.Log("Yes");
-    }
-    
+        GameObject destroyEffect = (GameObject)Instantiate(_destroyEffect, transform.position, transform.rotation);
+        Destroy(destroyEffect, 2f);
+    }    
 }

@@ -5,32 +5,14 @@ using UnityEngine;
 public class BulletBehaivior : MonoBehaviour
 {
     [SerializeField] private Transform _centerPoint;
-    [SerializeField] private float _radius;
     [SerializeField] private LayerMask _obstacleMask;
-    private bool _canDestroyObstacle = false;
+    [SerializeField] private GameObject _destroyBulletEffect;
     private Collider[] _hitObstacle;
 
     private void Update()
     {
         
-        /*Collider[]*/ _hitObstacle = Physics.OverlapSphere(_centerPoint.position, _radius, _obstacleMask);
-
-        /*if (_canDestroyObstacle)
-        {
-            foreach (Collider obstacle in _hitObstacle)
-            {
-                Destroy(obstacle.gameObject, 0.8f);
-            }
-        }*/
-        
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (_centerPoint == null)
-            return;
-
-        Gizmos.DrawWireSphere(_centerPoint.position, _radius); 
+        /*Collider[]*/ _hitObstacle = Physics.OverlapSphere(_centerPoint.position, transform.localScale.x * 2, _obstacleMask);      
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -42,13 +24,20 @@ public class BulletBehaivior : MonoBehaviour
 
         if (collision.collider.tag == "Obstacle")
         {
-            _canDestroyObstacle = true;
-            Destroy(gameObject, 1.9f);
+            DestroyBulletEffect();
+            Destroy(gameObject, 0.1f);
             foreach (Collider obstacle in _hitObstacle)
             {
                 obstacle.GetComponent<Obstacle>().ToDestroyColor();
-                Destroy(obstacle.gameObject, 0.5f);
+                obstacle.GetComponent<Obstacle>().DestroyEffect();
+                Destroy(obstacle.gameObject, 0.1f);
             }
         }
+    }
+
+    private void DestroyBulletEffect()
+    {
+        GameObject destroyEffect = (GameObject)Instantiate(_destroyBulletEffect, transform.position, transform.rotation);
+        Destroy(destroyEffect, 2f);
     }
 }
