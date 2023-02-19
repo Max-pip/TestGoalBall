@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -26,13 +24,6 @@ public class PlayerInput : MonoBehaviour
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
-        /*
-        if (Input.GetMouseButtonDown(0))
-        {
-            CreateBullet?.Invoke();
-        }
-        */
-
         if (Input.GetMouseButton(0))
         {
             OnPressed?.Invoke();
@@ -46,12 +37,6 @@ public class PlayerInput : MonoBehaviour
 
     private void GetMobileInput()
     {
-        /*if (Input.touchCount == 1)
-        {
-            _isTouchPressed = true;
-            OnPressed?.Invoke();
-        }*/
-
         if (Input.touchCount > 0)
         {
             Touch touch = Input.touches[0];

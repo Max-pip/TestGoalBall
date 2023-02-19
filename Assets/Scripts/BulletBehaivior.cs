@@ -8,21 +8,22 @@ public class BulletBehaivior : MonoBehaviour
     [SerializeField] private LayerMask _obstacleMask;
     [SerializeField] private GameObject _destroyBulletEffect;
     private Collider[] _hitObstacle;
+    private string _goalTag = "Goal";
+    private string _obstacleTag = "Obstacle";
 
     private void Update()
     {
-        
-        /*Collider[]*/ _hitObstacle = Physics.OverlapSphere(_centerPoint.position, transform.localScale.x * 2, _obstacleMask);      
+        _hitObstacle = Physics.OverlapSphere(_centerPoint.position, transform.localScale.x * 2, _obstacleMask);      
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.tag == "Goal")
+        if (collision.collider.tag == _goalTag)
         {
             Destroy(gameObject);
         }
 
-        if (collision.collider.tag == "Obstacle")
+        if (collision.collider.tag == _obstacleTag)
         {
             DestroyBulletEffect();
             Destroy(gameObject, 0.1f);

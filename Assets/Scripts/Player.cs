@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
@@ -9,36 +6,39 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _losePanel;
     [SerializeField] private GameObject _winPanel;
 
-    [Header("Player`s setting")]
+    [Header("Setting")]
+    [SerializeField] private Transform _target;
     [SerializeField] private GameObject _prefab;
+    private Rigidbody _rb;
     private GameObject _currentPrefab;
     private float _prefabSpeed = 0f;
     private bool _canChangeSize;
     private bool _isLose = false;
+    private bool _canMoveToGoal = false;
+    private string _goalTag = "Goal";
+
+    private void Start()
+    {
+        _rb = GetComponent<Rigidbody>();
+        _rb.isKinematic = true;
+        _rb.detectCollisions = false;
+    }
 
     private void Update()
     {
-        if (_currentPrefab != null)
-        {
-            _currentPrefab.transform.position += Vector3.forward * _prefabSpeed * Time.deltaTime;
-        }
-        if (_currentPrefab == null )
-        {
-            _prefabSpeed = 0f;
-            _canChangeSize = true;
-        }
+        currentPrefab();
 
-        if (transform.localScale.x < 0.3f)
+        Lose();
+
+        if (_canMoveToGoal)
         {
-            _isLose = true;
-            _canChangeSize = false;
-            _losePanel.SetActive(true);
+            MoveToGoal();
         }
     }
 
     public void PlayerLocalScale()
     {
-        if (!_isLose)
+        if (!_isLose && !_canMoveToGoal)
         {
             if (_canChangeSize)
             {
@@ -62,8 +62,56 @@ public class Player : MonoBehaviour
         SetSpeedBullet(10);
     }
 
+    public void SetActiveRB()
+    {
+        _canMoveToGoal= true;
+        _rb.isKinematic = false;
+        _rb.detectCollisions = true;
+    }
+
+    private void MoveToGoal()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, _target.position, 5f * Time.deltaTime);
+    }
+
     public void SetSpeedBullet(float speed)
     {
         _prefabSpeed = speed;
+    }
+
+    private void currentPrefab()
+    {
+        if (_currentPrefab != null)
+        {
+            _currentPrefab.transform.position += Vector3.forward * _prefabSpeed * Time.deltaTime;
+        }
+        if (_currentPrefab == null)
+        {
+            _prefabSpeed = 0f;
+            _canChangeSize = true;
+        }
+    }
+
+    private void Lose()
+    {
+        if (transform.localScale.x < 0.3f)
+        {
+            _isLose = true;
+            _canChangeSize = false;
+            _losePanel.SetActive(true);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        _rb.AddForce(Vector3.up * 4, ForceMode.Impulse);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == _goalTag)
+        {
+            _winPanel.SetActive(true);
+        } 
     }
 }
