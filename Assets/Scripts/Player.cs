@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
         {
             if (_canChangeSize)
             {
-                transform.localScale -= new Vector3(0.003f, 0.003f, 0.003f);
+                transform.localScale -= new Vector3(0.009f, 0.009f, 0.009f);
             }
             if (_currentPrefab == null)
             {
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
 
             if (_currentPrefab != null && _canChangeSize)
             {
-                _currentPrefab.transform.localScale += new Vector3(0.003f, 0.003f, 0.003f);
+                _currentPrefab.transform.localScale += new Vector3(0.009f, 0.009f, 0.009f);
             }
         }       
     }
